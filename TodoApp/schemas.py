@@ -14,6 +14,10 @@ class CreateUserRequest(BaseModel):
     password: str
     role: str
 
+class UserVerifcation(BaseModel):
+    password: str
+    new_password: str = Field(min_length=6)
+
 class Token(BaseModel):
     access_token: str
     token_type: str
