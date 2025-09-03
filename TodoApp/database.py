@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-SQLALCHEMY_DATABASE_URL = os.getenv("SQLALCHEMY_DATABASE_URL")
+SQLALCHEMY_DATABASE_URL = os.getenv("SQLALCHEMY_DATABASE_URL_MYSQL")
 
 if SQLALCHEMY_DATABASE_URL is None:
 	raise ValueError("SQLALCHEMY_DATABASE_URL environment variable is not set.")
