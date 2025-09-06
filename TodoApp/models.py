@@ -13,6 +13,7 @@ class Users(Base):
     hashed_password: Mapped[str] = mapped_column()
     is_active: Mapped[bool] = mapped_column(default=True)
     role: Mapped[str] = mapped_column()
+    phone_number: Mapped[str] = mapped_column(nullable=True)
     
     todos: Mapped[list["Todos"]] = relationship(
         back_populates="owner", cascade="all, delete-orphan"

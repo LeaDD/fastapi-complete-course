@@ -13,6 +13,7 @@ class CreateUserRequest(BaseModel):
     last_name: str
     password: str
     role: str
+    phone_number: str | None = None
 
 class UserVerifcation(BaseModel):
     password: str
