@@ -1,12 +1,12 @@
 from fastapi import FastAPI
-import models
-from database import engine
-from routers import auth, todos, admin, user
+from TodoApp.models import Base
+from TodoApp.database import engine
+from TodoApp.routers import auth, todos, admin, user
 
 app = FastAPI()
 
 # Create tables (once) on startup. In production you’d use Alembic migrations.
-models.Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 @app.get("/healthy")
 def health_check():

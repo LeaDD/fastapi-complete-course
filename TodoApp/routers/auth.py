@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Body, Depends, HTTPException
-from models import Users
-from schemas import CreateUserRequest, Token
+from TodoApp.models import Users
+from TodoApp.schemas import CreateUserRequest, Token
 from passlib.context import CryptContext
 from typing import Annotated, cast
 from sqlalchemy.orm import Session
-from database import SessionLocal
+from TodoApp.database import SessionLocal
 from starlette import status
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from jose import jwt, JWTError

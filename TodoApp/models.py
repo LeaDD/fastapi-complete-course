@@ -1,7 +1,7 @@
 # Newer more modern approach - also this is consistent with how I am doing it in my personal site
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from database import Base
+from TodoApp.database import Base
 
 class Users(Base):
     __tablename__ = "users"
