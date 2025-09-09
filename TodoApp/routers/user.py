@@ -1,11 +1,11 @@
 from typing import Annotated
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException, Path, Body
-from models import Users
-from schemas import UserVerifcation
-from database import SessionLocal
+from TodoApp.models import Users
+from TodoApp.schemas import UserVerifcation
+from TodoApp.database import SessionLocal
 from starlette import status
-from .auth import get_current_user
+from TodoApp.routers.auth import get_current_user
 from passlib.context import CryptContext
 
 router = APIRouter(
@@ -46,4 +46,12 @@ async def change_password(user: user_dependency, db: db_dependency, user_verific
     db.add(user_model)
     db.commit()
     
+@router.put("/phone_number", status_code=status.HTTP_204_NO_CONTENT)
+async def update_phone_number(user: user_dependency, db: db_dependency, phone_number: str = Body(...)):
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication failed.")
+    user_model = db.query(Users).filter(Users.id == user.get("user_id")).first()
+    user_model.phone_number = phone_number # type: ignore
+    db.add(user_model)
+    db.commit()
     

@@ -1,11 +1,11 @@
 from typing import Annotated
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException, Path, Body
-from models import Todos
-from schemas import TodoRequest
-from database import SessionLocal
+from TodoApp.models import Todos
+from TodoApp.schemas import TodoRequest
+from TodoApp.database import SessionLocal
 from starlette import status
-from .auth import get_current_user
+from TodoApp.routers.auth import get_current_user
 
 
 router = APIRouter()

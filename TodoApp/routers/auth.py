@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Body, Depends, HTTPException
-from models import Users
-from schemas import CreateUserRequest, Token
+from TodoApp.models import Users
+from TodoApp.schemas import CreateUserRequest, Token
 from passlib.context import CryptContext
 from typing import Annotated, cast
 from sqlalchemy.orm import Session
-from database import SessionLocal
+from TodoApp.database import SessionLocal
 from starlette import status
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from jose import jwt, JWTError
@@ -72,7 +72,8 @@ async def create_user(db: db_dependency, create_user_request: CreateUserRequest 
         last_name=create_user_request.last_name,
         role = create_user_request.role,
         hashed_password=bcrypt_context.hash(create_user_request.password),
-        is_active=True
+        is_active=True,
+        phone_number=create_user_request.phone_number
     )
 
     db.add(create_user_model)
