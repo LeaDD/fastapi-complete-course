@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException, Request
 from TodoApp.models import Users
 from TodoApp.schemas import CreateUserRequest, Token
 from passlib.context import CryptContext
@@ -11,6 +11,7 @@ from jose import jwt, JWTError
 from dotenv import load_dotenv
 import os
 from datetime import timedelta, datetime, timezone
+from fastapi.templating import Jinja2Templates
 
 load_dotenv()
 
@@ -36,6 +37,15 @@ def get_db():
 # A type alias for dependency injection: Session provided by get_db()
 db_dependency = Annotated[Session, Depends(get_db)]
 
+templates = Jinja2Templates(directory="TodoApp/templates")
+
+### Pages ### 
+
+@router.get("/login-page")
+def render_login_page(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+### Endpoints ###
 def authenticate_user(username: str, password: str, db):
     user = db.query(Users).filter(Users.username == username).first()
     if not user:
