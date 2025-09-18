@@ -4,6 +4,7 @@ from TodoApp.database import engine
 from TodoApp.routers import auth, todos, admin, user
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+import os
 
 app = FastAPI()
 
