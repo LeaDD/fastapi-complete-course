@@ -91,3 +91,40 @@ async def delete_todo(
     
     db.delete(todo_model)
     db.commit()
+
+@router.patch("/todo/{todo_id}/toggle", status_code=status.HTTP_200_OK)
+async def toggle_todo_completion(
+                        user: user_dependency,
+                        db: db_dependency, 
+                        todo_id: int = Path(gt=0)
+                    ):
+    """Toggle the completion status of a todo item"""
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication failed.")
+    todo_model = db.query(Todos).filter(Todos.id == todo_id).filter(Todos.owner_id == user.get("user_id")).first()
+    if todo_model is None:
+        raise HTTPException(status_code=404, detail="Todo not found")
+    
+    todo_model.complete = not todo_model.complete
+    db.add(todo_model)
+    db.commit()
+    return {"id": todo_model.id, "complete": todo_model.complete, "message": "Todo status updated successfully"}
+
+@router.get("/stats", status_code=status.HTTP_200_OK)
+async def get_todo_stats(user: user_dependency, db: db_dependency):
+    """Get statistics about user's todos"""
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication failed.")
+    
+    user_todos = db.query(Todos).filter(Todos.owner_id == user.get("user_id")).all()
+    total_todos = len(user_todos)
+    completed_todos = len([todo for todo in user_todos if todo.complete])
+    pending_todos = total_todos - completed_todos
+    completion_rate = (completed_todos / total_todos * 100) if total_todos > 0 else 0
+    
+    return {
+        "total_todos": total_todos,
+        "completed_todos": completed_todos,
+        "pending_todos": pending_todos,
+        "completion_rate": round(completion_rate, 2)
+    }
