@@ -9,7 +9,7 @@ from TodoApp.routers.auth import get_current_user
 from starlette.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 
-templates = Jinja2Templates(directory="TododApp/templates")
+templates = Jinja2Templates(directory="TodoApp/templates")
 
 
 router = APIRouter(
@@ -43,7 +43,7 @@ async def render_todo_page(request: Request, db: db_dependency):
         if user is None:
             return redirect_to_login()
         
-        todos = db.query(Todos).filter(Todos.owner_id == user.get("id")).all()
+        todos = db.query(Todos).filter(Todos.owner_id == user.get("user_id")).all()
 
         return templates.TemplateResponse("todo.html", {"request": request, "todos": todos, "user": user})
 
