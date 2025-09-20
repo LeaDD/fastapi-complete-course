@@ -49,7 +49,7 @@ def render_login_page(request: Request):
 def render_register_page(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
-### Endpoints ###
+### Functions ###
 def authenticate_user(username: str, password: str, db):
     user = db.query(Users).filter(Users.username == username).first()
     if not user:
@@ -77,6 +77,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user.")
 
+### Endpoints ###
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_user(db: db_dependency, create_user_request: CreateUserRequest = Body(...)):
     create_user_model = Users(
