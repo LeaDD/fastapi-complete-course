@@ -1,23 +1,23 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, status
 from TodoApp.models import Base
 from TodoApp.database import engine
 from TodoApp.routers import auth, todos, admin, user
-from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 import os
+from fastapi.responses import RedirectResponse
 
 app = FastAPI()
 
 # Create tables (once) on startup. In production you’d use Alembic migrations.
 Base.metadata.create_all(bind=engine)
 
-templates = Jinja2Templates(directory="TodoApp/templates")
+
 
 app.mount("/static", StaticFiles(directory="TodoApp/static"), name="static")
 
 @app.get("/")
 def test(request: Request):
-    return templates.TemplateResponse("home.html", {"request": request})
+    return RedirectResponse(url="/todos/todo-page", status_code=status.HTTP_302_FOUND)
 
 @app.get("/healthy")
 def health_check():
