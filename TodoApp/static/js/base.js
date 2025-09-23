@@ -27,10 +27,13 @@
 
                 if (response.ok) {
                     form.reset(); // Clear the form
+                    alert('Todo created successfully!');
+                    window.location.href = '/todos/todo-page'; // Redirect to todo page
                 } else {
                     // Handle error
                     const errorData = await response.json();
-                    alert(`Error: ${errorData.detail}`);
+                    console.error('Error response:', errorData);
+                    alert(`Error: ${errorData.detail || 'Unknown error occurred'}`);
                 }
             } catch (error) {
                 console.error('Error:', error);
